@@ -4,9 +4,9 @@
 # Connect a Nintendo Wii Remote via Bluetooth
 # and read the button states in Python.
 #
-# Based on Matt Hawkins Project:
+# Based on Matt Hawkins Project (dated 30/01/2013):
 # http://www.raspberrypi-spy.co.uk/?p=1101
-# Date   : 30/01/2013
+
  
 # -----------------------
 # Import required Python libraries
