@@ -1,0 +1,109 @@
+#!/usr/bin/python
+#
+# wiiRemote03.py
+# Connect a Nintendo Wii Remote via Bluetooth
+# and read the button states in Python.
+#
+# Based on Matt Hawkins Project:
+# http://www.raspberrypi-spy.co.uk/?p=1101
+# Date   : 30/01/2013
+ 
+# -----------------------
+# Import required Python libraries
+# -----------------------
+from rrb3 import *
+import cwiid
+import time
+
+rr = RRB3(9.0, 6.0) # battery, motor
+motor_speed = 0.4
+button_delay = 0.1
+button_delay2 = 0.3
+
+print 'Press 1 + 2 together on your Wii Remote now ...'
+time.sleep(1)
+ 
+# Connect to the Wii Remote. If it times out
+# then quit.
+try:
+    wii=cwiid.Wiimote()
+except RuntimeError:
+    print "Error opening wiimote connection"
+    quit()
+ 
+print 'Wii Remote connected...\n'
+print 'Press A and B buttons together to disconnect and quit.\n'
+print 'Use Left, Right, Up & Down to control direction.\n'
+print 'Use - & + to control speed.\n'
+print 'Press button B to stop motors.\n'
+
+wii.rpt_mode = cwiid.RPT_BTN
+
+def readDirection():
+    if direction == 'LEFT':
+        rr.left(0, motor_speed)
+    if direction == 'RIGHT':
+        rr.right(0, motor_speed)
+    if direction == 'UP':
+        rr.forward(0, motor_speed)
+    if direction == 'DOWN':
+        rr.reverse(0, motor_speed)
+
+while True:
+ 
+    buttons = wii.state['buttons']
+ 
+    # If A and B buttons pressed
+    # together then rumble and quit.
+
+    if (buttons - cwiid.BTN_A - cwiid.BTN_B == 0):
+        print '\nClosing connection ...'
+        wii.rumble = 1
+        time.sleep(1)
+        wii.rumble = 0
+        exit(wii)
+
+    # Check if other buttons are pressed by
+    # doing a 'bitwise AND' of the buttons number
+    # and the predefined constant for that button.
+
+    if (buttons & cwiid.BTN_LEFT):
+        rr.left(0, motor_speed)
+        direction = 'LEFT'
+        print 'Left pressed'
+        time.sleep(button_delay)
+ 
+    if(buttons & cwiid.BTN_RIGHT):
+        rr.right(0, motor_speed)
+        direction = 'RIGHT'
+        print 'Right pressed'
+        time.sleep(button_delay)
+ 
+    if (buttons & cwiid.BTN_UP):
+        rr.forward(0, motor_speed) # if you don't specify duration it keeps going indefinitely    print 'Up pressed'
+        direction = 'UP'
+        print 'Up pressed'
+        time.sleep(button_delay)
+ 
+    if (buttons & cwiid.BTN_DOWN):
+        rr.reverse(0, motor_speed)
+        direction = 'DOWN'
+        print 'Down pressed'
+        time.sleep(button_delay)
+
+    if (buttons & cwiid.BTN_B):
+        rr.stop()
+        print 'Button B pressed'
+        time.sleep(button_delay)
+	
+    if (buttons & cwiid.BTN_MINUS):
+        motor_speed = motor_speed - 0.1
+        readDirection()
+        print 'Slower'
+        time.sleep(button_delay2)
+
+    if (buttons & cwiid.BTN_PLUS):
+        motor_speed = motor_speed + 0.1
+        readDirection()
+        print 'Faster'
+        time.sleep(button_delay2)
