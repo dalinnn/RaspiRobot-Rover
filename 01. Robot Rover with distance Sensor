@@ -2,7 +2,7 @@
 
 # Use the arrow keys to direct the robot
 # This multi-threaded robot example allows you to move the rover using keyboard keys (over SSH).
-# It also detects obstacles using the rangfinder and automatically back-up.
+# It also detects obstacles using the rangefinder and automatically backs away.
 
 from multiprocessing import Process
 
