@@ -30,7 +30,10 @@ try:
 except RuntimeError:
     print "Error opening wiimote connection"
     quit()
- 
+
+#turn on led on wiiRemote to show connected 
+wii.led = 1
+
 print 'Wii Remote connected...\n'
 print 'Press A and B buttons together to disconnect and quit.\n'
 print 'Use Left, Right, Up & Down to control direction.\n'
