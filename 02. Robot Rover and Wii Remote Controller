@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# wiiRemote03.py
+# wiiRemote04.py
 # Connect a Nintendo Wii Remote via Bluetooth
 # and read the button states in Python.
 #
